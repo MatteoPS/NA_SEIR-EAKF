@@ -1,5 +1,5 @@
-# North-America-Metapop
-
+# Modelling COVID-19 in the North American region with a metapopulation network and Kalman filter
+medRxiv preprint: https://doi.org/10.1101/2024.06.05.24308495
 _Metapopulation SEI<sup>r</sup>I<sup>u</sup>R model for North American region (CA, US, MX) at the state level. <br/>
 Implemented with EAKF, daytime and nighttime transmission, daily adjusted mobility rate, integrated stochastically_
 <p float="left">
