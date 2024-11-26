@@ -14,16 +14,14 @@ estday3='15-Mar-2021';
 
 
 estdays = {estday1, estday2, estday3};
-%estdays = {estday1}
+
 loc_of_interest_days = [ "British Columbia" "New York" "Distrito Federal"; ...
                          "Ontario" "Florida" "Estado de Mexico"; ...
-                         "Quebec" "California" "Jalisco"]
+                         "Quebec" "California" "Jalisco"];
                          
-                         %;...
-                         %"Alabama" "North Dakota" "Ohio"];
 
 
-for i=1:length(estdays)
+for i=1:length(loc_of_interest_days)
 
     loc_of_interest = loc_of_interest_days(i,:);
 
@@ -44,8 +42,6 @@ for i=1:length(estdays)
 
 
     prefix_files= "Obs-para";
-
-
 
     figpaper=figure('visible','off');
 
@@ -258,16 +254,19 @@ for i=1:length(estdays)
         end
 
     end
+    
+    %SVG
+    %file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.svg'],'');
+    %set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
+    %print(figpaper,file_figpaper,'-dsvg','-r450');
 
-    file_figpaper = strjoin(['Output/' i prefix_files '.svg'],'');
+    %JPG
+    file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.jpg'],'');
     set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
-    print(figpaper,file_figpaper,'-dsvg','-r450');
+    print(figpaper,file_figpaper,'-djpeg','-r200');
 end
 
 
 
 
-
-
-%%%legends
 

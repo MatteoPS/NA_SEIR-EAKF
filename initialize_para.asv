@@ -24,5 +24,9 @@ para(4,:)=datasample(parafit(4,:),num_ens);
 
 for l=1:num_loc
     %alpha is will be re inialized in the model script  
+    %para(alphamap(l),:)=parafit(5,ceil(rand(1,num_ens)*size(parafit,2))); 
+    %beta
     para(betamap(l),:)=parafit(6,ceil(rand(1,num_ens)*size(parafit,2))); %sampling from datafit
+    
+
 end

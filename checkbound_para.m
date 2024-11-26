@@ -18,8 +18,6 @@ for i = 1:length(alphamaps) % length(alphamaps)==num_loc
     para(alphamaps(i),para(alphamaps(i),:)>paramax(alphamaps(i)))=rand(dim2).*(maxa-mina) + mina;
 
 
-
-
     %out-of-bound beta are resampled across the ensamble at that time times a factor
 
     %min of the \beta above betalow, or betalow if they are all below

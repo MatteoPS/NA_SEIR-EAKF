@@ -18,7 +18,7 @@ clear dailyincidence_real
 load commutedata.mat %load inter-county commuting data
 load statecodes.mat
 load population.mat
-load parafit_b-rnd_higher-alow.mat
+load parafit_rev.mat
 load google_percw.csv
 
 loc_of_interest = {'Baja California','California','Texas','Florida','New York','Pennsylvania','Estado de Mexico', ...
@@ -160,24 +160,37 @@ Iu=rnd_matrix;
 %initialize parameter
 [para,betamap,alphamaps]=initialize_para(num_loc,num_ens,parafit);
 
+
+%initialize alpha
 % alpha = weighted alpha +- random flactuation.
 CAid = statecodes.Var1(strcmp(statecodes.Var3, 'CA'));
 USid = statecodes.Var1(strcmp(statecodes.Var3, 'US'));
 MXid = statecodes.Var1(strcmp(statecodes.Var3, 'MX'));
 
-CTRYids = {CAid, USid, MXid};
-for i = 1:numel(CTRYids)
-    % Get the current variable
+%US got the  aplha valuee from seroprevalnce studies
+% Get the current variable
+ids = USid;
+fluctuation = lambda_initial_para * US_weighted_alpha;
+randomFluctuations = -fluctuation + 2 * fluctuation * rand(size(para(alphamaps(ids), :)));
+para(alphamaps(ids), :) = repmat(US_weighted_alpha, 1, num_ens) + randomFluctuations;
+%out-of-bound alpha gets US_weighted_alpha
+para(alphamaps(ids),para(alphamaps(ids),:)<alphalow)=US_weighted_alpha;
+para(alphamaps(ids),para(alphamaps(ids),:)>alphaup)=US_weighted_alpha;
+
+CTRYids = {CAid, MXid};
+for i = 1:numel(CTRYids)    
     ids = CTRYids{i};
-    fluctuation = lambda_initial_para * weighted_alpha(ids(1));
-    randomFluctuations = -fluctuation + 2 * fluctuation * rand(size(para(alphamaps(ids), :)));
-    para(alphamaps(ids), :) = repmat(weighted_alpha(ids), 1, num_ens) + randomFluctuations;
+    mu_exp = 0.022; 
+    randomFluctuations = exprnd(mu_exp, size(para(alphamaps(ids), :)));
+    para(alphamaps(ids), :) = alphalow + randomFluctuations; % Shifted exponential distribution (min is alpha lower bound)
+    para(alphamaps(ids),para(alphamaps(ids),:)>alphaup)=alphalow+0.0001;
 end
-%first checkbound_para
+
+
+
+
+
 for i = 1:num_loc
-    %out-of-bound alpha gets its weighted_alpha accordin to the country
-    para(alphamaps(i),para(alphamaps(i),:)<alphalow)=weighted_alpha(i);
-    para(alphamaps(i),para(alphamaps(i),:)>alphaup)=weighted_alpha(i);
     %out-of-bound beta are resampled across the entire range
     para(betamap(i),para(betamap(i),:)<betalow)=random('uniform', betalow, betaup, size(para(betamap(i),para(betamap(i),:)<betalow)));
     para(betamap(i),para(betamap(i),:)>betaup)=random('uniform', betalow, betaup, size(para(betamap(i),para(betamap(i),:)>betaup)));

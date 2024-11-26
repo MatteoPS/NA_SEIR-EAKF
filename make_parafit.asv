@@ -72,9 +72,7 @@ end
 parafit=squeeze(parafit);
 
 
-clear statecodes dailyincidence_real days_to_consider rowsToUpdate population n_sim statecodesus statecodesmx statecodeca ...
-    ca_infection_induced_seroprevalence mx_infection_induced_seroprevalence us_infection_induced_seroprevalence ...
-    weighted_alphamx weighted_alphaus weighted_alphaca
+clear statecodes dailyincidence_real days_to_consider rowsToUpdate population n_sim statecodesus statecodesmx statecodeca ca_infection_induced_seroprevalence mx_infection_induced_seroprevalence US_weighted_alpha wai
 
 
 

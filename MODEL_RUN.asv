@@ -1,4 +1,5 @@
-
+%SEIR-EKAF MODEL RUN WITH REAL DATA
+function MODEL_RUN(nickname)
 
 %Inter-county commuting is stored using neighbor list: nl, part and C.
 %nl (neighbor list) and part (partition) both describe the network structure.
@@ -7,7 +8,6 @@
 %C has the same size with nl.
 %The commuters from location i to location j=nl(part(i)+x) is C(part(i)+x).
 
-nickname="R";
 num_times=437; %from January 20, 2020 to  March 31, 2021
 
 %%%%%%%%%%%%%%%%%loading data
@@ -19,6 +19,7 @@ load commutedata.mat %load inter-county commuting data
 load statecodes.mat
 load population.mat
 load parafit_b-rnd_higher-alow.mat
+%load parafit_rev2.mat
 load google_percw.csv
 
 loc_of_interest = {'Baja California','California','Texas','Florida','New York','Pennsylvania','Estado de Mexico', ...
@@ -31,7 +32,7 @@ loc_of_interest = {'Baja California','California','Texas','Florida','New York','
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-num_ens=3; %number of ensemble members
+num_ens=300; %number of ensemble members
 
 %%%%%%%%%%%%%%%%%%%%% select today for figures names
 mmdd=datestr(datetime('now'), 'mmdd');
@@ -165,14 +166,24 @@ CAid = statecodes.Var1(strcmp(statecodes.Var3, 'CA'));
 USid = statecodes.Var1(strcmp(statecodes.Var3, 'US'));
 MXid = statecodes.Var1(strcmp(statecodes.Var3, 'MX'));
 
-CTRYids = {CAid, USid, MXid};
-for i = 1:numel(CTRYids)
+%for i = 1:numel(USid) %%% us ID got the  aplha valuee from seroprevalnce studies
     % Get the current variable
-    ids = CTRYids{i};
+    ids = USid;
     fluctuation = lambda_initial_para * weighted_alpha(ids(1));
     randomFluctuations = -fluctuation + 2 * fluctuation * rand(size(para(alphamaps(ids), :)));
     para(alphamaps(ids), :) = repmat(weighted_alpha(ids), 1, num_ens) + randomFluctuations;
+%end
+
+%set MX and CA alpha mean to zero and standard deviation 0.08
+CTRYids = {CAid,  MXid};
+for i = 1:numel(CTRYids)    
+    ids = CTRYids{i};
+    fluctuation = 0.08; % Controls the spread (standard deviation)
+    randomFluctuations = abs(fluctuation * randn(size(para(alphamaps(ids), :))));
+    para(alphamaps(ids), :) = randomFluctuations; %half normal distribution with mean zero
 end
+
+
 %first checkbound_para
 for i = 1:num_loc
     %out-of-bound alpha gets its weighted_alpha accordin to the country
