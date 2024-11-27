@@ -22,7 +22,8 @@ loc_of_interest_days = [ "British Columbia" "New York" "Distrito Federal"; ...
 
 
 for i=1:length(loc_of_interest_days)
-
+    
+    reference_date=datetime(estdays{i});
     loc_of_interest = loc_of_interest_days(i,:);
 
     Rt=para_post(betamap,:,:).*para_post(2,:,:).*(para_post(alphamaps,:,:)+((1-para_post(alphamaps,:,:)).*para_post(3,:,:)));
@@ -68,10 +69,10 @@ for i=1:length(loc_of_interest_days)
         lir=plot(datetime(startday):datetime(endday), squeeze(mean(dailyIr_post_rec(loc_plot,:,:),2)),'LineWidth',1.5, color=[purple alpha_value+0.2]);
         lobs=plot(datetime(startday):datetime(endday), obs_case(loc_plot,:),'LineWidth',1, color=[black alpha_value+0.2]); % 7-days smoothed dailyincidence
         
-        %xline(reference_date,"--",LineWidth=2)
-        xline(datetime(estday1),"--",LineWidth=2)
-        xline(datetime(estday2),"--",LineWidth=2)
-        xline(datetime(estday3),"--",LineWidth=2)
+        xline(reference_date,"--",LineWidth=2)
+        %xline(datetime(estday1),"--",LineWidth=2)
+        %xline(datetime(estday2),"--",LineWidth=2)
+        %xline(datetime(estday3),"--",LineWidth=2)
         hold off
         set(gca,'xtick',[])
         set(gca,'fontsize', 15)
@@ -119,10 +120,10 @@ for i=1:length(loc_of_interest_days)
         lIr=plot(datetime(startday):datetime(endday), mean(cumu_dailyIr_post_perc(loc_plot,:,:),3),'-', 'LineWidth',1, 'Color', purple -0.1);
 
 
-        %xline(reference_date,"--",LineWidth=2)
-        xline(datetime(estday1),"--",LineWidth=2)
-        xline(datetime(estday2),"--",LineWidth=2)
-        xline(datetime(estday3),"--",LineWidth=2)
+        xline(reference_date,"--",LineWidth=2)
+        %xline(datetime(estday1),"--",LineWidth=2)
+        %xline(datetime(estday2),"--",LineWidth=2)
+        %xline(datetime(estday3),"--",LineWidth=2)
 
 
         xlim([datetime(startday) datetime(endday)]);
@@ -159,10 +160,10 @@ for i=1:length(loc_of_interest_days)
         %plot(paramin_rec(alphamaps(loc_plot),:),'k--')
         hold off
 
-        %xline(reference_date,"--",LineWidth=2)
-        xline(datetime(estday1),"--",LineWidth=2)
-        xline(datetime(estday2),"--",LineWidth=2)
-        xline(datetime(estday3),"--",LineWidth=2)
+        xline(reference_date,"--",LineWidth=2)
+        %xline(datetime(estday1),"--",LineWidth=2)
+        %xline(datetime(estday2),"--",LineWidth=2)
+        %xline(datetime(estday3),"--",LineWidth=2)
 
         %title('\alpha')
         xlim([datetime(startday) datetime(endday)]);
@@ -198,10 +199,10 @@ for i=1:length(loc_of_interest_days)
         xlim([datetime(startday) datetime(endday)]);
         ylim([0 inf])
 
-        %xline(reference_date,"--",LineWidth=2)
-        xline(datetime(estday1),"--",LineWidth=2)
-        xline(datetime(estday2),"--",LineWidth=2)
-        xline(datetime(estday3),"--",LineWidth=2)
+        xline(reference_date,"--",LineWidth=2)
+        %xline(datetime(estday1),"--",LineWidth=2)
+        %xline(datetime(estday2),"--",LineWidth=2)
+        %xline(datetime(estday3),"--",LineWidth=2)
         
         box off
 
@@ -230,10 +231,10 @@ for i=1:length(loc_of_interest_days)
         yline(1, color=gray)
         plot(datetime(startday):datetime(endday),Rt_mean(loc_plot,:)','LineWidth',1.5, color=yellow-0.1);
 
-        %xline(reference_date,"--",LineWidth=2)
-        xline(datetime(estday1),"--",LineWidth=2)
-        xline(datetime(estday2),"--",LineWidth=2)
-        xline(datetime(estday3),"--",LineWidth=2)
+        xline(reference_date,"--",LineWidth=2)
+        %xline(datetime(estday1),"--",LineWidth=2)
+        %xline(datetime(estday2),"--",LineWidth=2)
+        %xline(datetime(estday3),"--",LineWidth=2)
         %box off
         hold off
 
@@ -256,15 +257,15 @@ for i=1:length(loc_of_interest_days)
     end
     
     %SVG
-    %file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.svg'],'');
-    %set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
-    %print(figpaper,file_figpaper,'-dsvg','-r450');
+    % file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.svg'],'');
+    % set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
+    % print(figpaper,file_figpaper,'-dsvg','-r450');
 
     %JPG
     file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.jpg'],'');
     set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
     print(figpaper,file_figpaper,'-djpeg','-r200');
-end
+ end
 
 
 
