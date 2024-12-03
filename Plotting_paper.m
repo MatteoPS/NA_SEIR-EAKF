@@ -16,19 +16,24 @@ estday3='15-Mar-2021';
 estdays = {estday1, estday2, estday3};
 
 loc_of_interest_days = [ "British Columbia" "New York" "Distrito Federal"; ...
-                         "Ontario" "Florida" "Estado de Mexico"; ...
-                         "Quebec" "California" "Jalisco"];
-                         
+    "Ontario" "Florida" "Estado de Mexico"; ...
+    "Quebec" "California" "Jalisco"];
+
+
+%nickname="exeptions"
+%loc_of_interest_days = [ "Alabama" "Alabama"  "North Dakota"; ...
+%                         "Connecticut" "Connecticut" "Rhode Island" ];
+
 
 
 for i=1:length(loc_of_interest_days)
-    
+
     reference_date=datetime(estdays{i});
     loc_of_interest = loc_of_interest_days(i,:);
 
     Rt=para_post(betamap,:,:).*para_post(2,:,:).*(para_post(alphamaps,:,:)+((1-para_post(alphamaps,:,:)).*para_post(3,:,:)));
     Rt_mean=mean(Rt,2);
-    
+
 
     alpha_value = 0.3;
 
@@ -60,7 +65,7 @@ for i=1:length(loc_of_interest_days)
         if iname == 1
             title('\rmModel fitting','FontSize',20)
         end
-     
+
         lb_obs = prctile(squeeze(dailyIr_post_rec(loc_plot,:,:)), 2.5,1);
         ub_obs = prctile(squeeze(dailyIr_post_rec(loc_plot,:,:)), 97.5,1);
         air=area(datetime(startday):datetime(endday), ub_obs, 'EdgeColor',"w", 'FaceColor',purple+0.1, 'FaceAlpha',alpha_value);
@@ -68,7 +73,7 @@ for i=1:length(loc_of_interest_days)
         %plot(datetime(startday):datetime(endday), dailyincidence(loc_plot,:)', '*','MarkerSize', 1, color=gray);
         lir=plot(datetime(startday):datetime(endday), squeeze(mean(dailyIr_post_rec(loc_plot,:,:),2)),'LineWidth',1.5, color=[purple alpha_value+0.2]);
         lobs=plot(datetime(startday):datetime(endday), obs_case(loc_plot,:),'LineWidth',1, color=[black alpha_value+0.2]); % 7-days smoothed dailyincidence
-        
+
         xline(reference_date,"--",LineWidth=2)
         %xline(datetime(estday1),"--",LineWidth=2)
         %xline(datetime(estday2),"--",LineWidth=2)
@@ -203,7 +208,7 @@ for i=1:length(loc_of_interest_days)
         %xline(datetime(estday1),"--",LineWidth=2)
         %xline(datetime(estday2),"--",LineWidth=2)
         %xline(datetime(estday3),"--",LineWidth=2)
-        
+
         box off
 
         hold off
@@ -255,7 +260,7 @@ for i=1:length(loc_of_interest_days)
         end
 
     end
-    
+
     %SVG
     % file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.svg'],'');
     % set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
@@ -265,7 +270,7 @@ for i=1:length(loc_of_interest_days)
     file_figpaper = strjoin(['Output/' nickname '_' i '_' prefix_files '.jpg'],'');
     set(figpaper,'PaperUnits','inches','PaperPosition',[0 0 24 12])
     print(figpaper,file_figpaper,'-djpeg','-r200');
- end
+end
 
 
 
