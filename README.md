@@ -3,9 +3,7 @@
 _Metapopulation SEI<sup>r</sup>I<sup>u</sup>R model for the North American region (CA, US, MX) at the state level._  
 _Implemented with EAKF, incorporating daytime and nighttime transmission, daily adjusted mobility rates, and stochastic integration._  
 
-**medRxiv preprint:** [https://doi.org/10.1101/2024.06.05.24308495](https://doi.org/10.1101/2024.06.05.24308495)  
-
----
+**Publication** [https://doi.org/10.1016/j.epidem.2025.100818](https://doi.org/10.1016/j.epidem.2025.100818)
 
 ![Map of Commuting Flows](https://github.com/user-attachments/assets/aef9b42d-e2cb-4355-87fc-d3d9e670cbb0)  
 ![Metapopulation Structure](https://github.com/user-attachments/assets/2f386e76-9c25-42fe-9cb7-76be5f799259)  
